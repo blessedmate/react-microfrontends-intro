@@ -1,22 +1,30 @@
-import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 
-import {getProductById, currency} from "home/products";
+import { getProductById, currency } from "home/products";
+import placeAddToCart from "addtocart/placeAddToCart";
 
 export default function PDPContent() {
 
-    const {id} = useParams();
+    const { id } = useParams();
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        if(id){
+        if (id) {
             getProductById(id).then(setProduct);
         } else {
             setProduct(null);
         }
     }, [id]);
+    const addToCart = useRef(null);
 
-    if(!product) return null;
+    useEffect(() => {
+        if (addToCart.current) {
+            placeAddToCart(addToCart.current, product.id);
+        }
+    }, [product]);
+
+    if (!product) return null;
 
     return (
         <div className="grid grid-cols-2 gap-5">
@@ -30,6 +38,7 @@ export default function PDPContent() {
                         {currency.format(product.price)}
                     </div>
                 </div>
+                <div ref={addToCart}></div>
                 <div className="mt-10">{product.description}</div>
                 <div className="mt-10">{product.longDescription}</div>
             </div>
