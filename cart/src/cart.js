@@ -23,10 +23,10 @@ export const getCart = () =>
   });
 
 // Add a product to the cart
-export const addToCart = (productId) =>
+export const addToCart = (id) =>
   fetch(`${API_SERVER}/cart`, {
     method: "POST",
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ id }),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt.value}`,
